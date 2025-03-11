@@ -7,7 +7,7 @@ import { join } from "path";
 import mdToPdf from "md-to-pdf";
 
 const app = express();
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8201;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -73,6 +73,15 @@ app.post(
 );
 
 // Start the server
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM signal received: gracefully shutting down')
+  if (server) {
+    server.close(() => {
+      console.log('HTTP server closed')
+    })
+  }
+})
