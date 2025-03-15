@@ -63,8 +63,7 @@ app.post(
       }
 
       // Clean up temporary files
-        await Promise.all([unlink(mdPath), unlink(pdfPath)]);
-
+      await Promise.all([unlink(mdPath), unlink(pdfPath)]);
     } catch (error) {
       console.error("Error generating PDF:", error);
       return res.status(500).json({ error: "Failed to generate PDF" });
@@ -72,16 +71,19 @@ app.post(
   }
 );
 
+app.get("/health", async (req: Request, res: Response) => {
+  res.status(200).json({ message: "Api is running" });
+});
 // Start the server
 const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-process.on('SIGTERM', async () => {
-  console.log('SIGTERM signal received: gracefully shutting down')
+process.on("SIGTERM", async () => {
+  console.log("SIGTERM signal received: gracefully shutting down");
   if (server) {
     server.close(() => {
-      console.log('HTTP server closed')
-    })
+      console.log("HTTP server closed");
+    });
   }
-})
+});
