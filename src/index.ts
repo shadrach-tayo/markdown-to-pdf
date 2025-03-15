@@ -49,7 +49,7 @@ app.post(
 
       console.log("[convert pdf]", { baseDir: process.cwd(), mdPath, pdfPath });
 
-      let dir = execSync(`md-to-pdf ${mdPath}`);
+      let dir = execSync(`md-to-pdf ${mdPath} --launch-options '{ "args": ["--no-sandbox"] }'`);
 
       if (existsSync(pdfPath)) {
         res.status(200);
